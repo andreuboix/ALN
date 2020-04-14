@@ -1,6 +1,6 @@
 # Pràctica 1
   -LU Decomposition.
-  -Gauss and resolution (Doolitle method).
+  -Gauss and resolution (Doolittle method).
   -1,2,inf vectorial norms of the error yielded when calculating the solution.
   -1,2,inf matricial norms of the error yielded when decomposing the matrix A.
   -Calculation of the inverse matrix.
