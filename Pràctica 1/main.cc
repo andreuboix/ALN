@@ -8,7 +8,6 @@
 using namespace std;
 typedef vector<vector <double> > Matrix;
 
-
 			// LU PART //
 void Gauss (Matrix& A, int j);
 int pivotatge(Matrix& A, int j);
@@ -18,16 +17,21 @@ int lu(Matrix& A, vector<int>& permut);
 			// SOLVE PART //
 vector<double> resol(const Matrix& A, const vector<double>& b);
 Matrix LUing(Matrix& A);
-vector<double> residual(Matrix& A, vector<double>& x, vector<double>& b);
-Matrix PAing (Matrix& A, vector<int>& permut);
+vector<double> residual(const Matrix& A,const vector<double>& x,const vector<double>& b);
+Matrix PAing (const Matrix& A,const vector<int>& permut);
 
 	// ops //
+Matrix Id(int n);
+Matrix inverse (const Matrix& A);
+Matrix symmetric (const Matrix& A);
+Matrix transposed(const Matrix& A);
 Matrix multiplicacioMM(const Matrix & X, const Matrix & A);
 vector<double> multiplicacioMV(const Matrix& X, const vector<double>& Y);
 vector<double> restaVV (const vector<double>& X, const vector<double>& Y);
-Matrix restaMM (const Matrix& X, const Matrix& Y);
+Matrix restaMM (const Matrix& X,const  Matrix& Y);
 
  // determinant and norms of Matrices and Vectors//
+double trace (const Matrix& A);
 double det(const Matrix& A);
 double norma1M(const Matrix& A);
 double normainfM(const Matrix& A);
@@ -62,7 +66,8 @@ int main() {
     }
 				// THIS IS OUR ORIGINAL A & the PERMUTATION vector, USED TO YIELD THE P MATRIX//
 				
-    Matrix COPY = A; 
+    Matrix COPY = A;
+    Matrix COPY2 = A; 
     vector<int> perm(n,0);
     
 				// HERE BEGINS THE ACTUAL PROGRAM //
@@ -82,17 +87,23 @@ int main() {
 	 vector<double> x(n,0);
 	 x = resol(A,b);
 	 
+	 
 	 // RESIDUAL VECTOR //
 	 vector<double> r(n,0);
 	 r = residual(A,x,b);
 	 
 	 
 	 // WE PREPARE THE OUTPUT.TXT
+	 Matrix PA = PAing(A, perm);
+	 Matrix LU = multiplicacioMM(L,U);
+	 Matrix restat = restaMM(PA, LU);
+	 double deta = det(A);
 	 ofstream output;
-	 output.open ("output.txt");
+	 output.open("output.txt");
 	 output << scientific << setprecision(15);
 	 output << "The system dimension is " << n << "\n" << "\n";
-	 output << "The determinant of the system is " << det(A) << "\n" << "\n";
+	 output << "The determinant of the system is: ";
+	 output << deta << "\n" << "\n";
 	 output << "The permutation vector is: ( ";
 	 for(int i=0; i < n; ++i) output << perm[i] << ' ';
 	 output << ")" << "\n" << "\n";
@@ -102,15 +113,48 @@ int main() {
 	 else cout << "ODD." << endl << endl;
 	 * */
 	 output << "This is the estimation of the error in the PA = LU with the 1-norm and Infinity-Norm:" << "\n";
-	 Matrix PA = PAing(A, perm);
-	 Matrix LU = multiplicacioMM(L,U);
-	 Matrix restat = restaMM(PA, LU);
-	 output << "||PA - LU ||_{1} = " << norma1M(restat) << "\n";
-	 output << "||PA - LU ||_{infty} = " << normainfM(restat) << "\n";
+	 output << "||PA - LU ||_{1} = " << norma1M(restaMM(PAing(A,perm),multiplicacioMM(L,U))) << "\n";
+	 output << "||PA - LU ||_{infty} = " << normainfM(restaMM(PAing(A,perm),multiplicacioMM(L,U))) << "\n";
 	 output << endl << "This is the estimation of the error in the solution with the 1,2,Infinity-Norms:" << "\n";
 	 output << "||Ax - b||_{1} = " << norma1V(r) << "\n";
 	 output << "||Ax - b||_{2} = " << norma2V(r) << "\n";
-	 output << "||Ax - b||_{infty} = " << normainfV(r) << "\n";
+	 output << "||Ax - b||_{infty} = " << normainfV(r) << "\n"; 
+	 output << "\n \n \n" << "And this is the solution vector given: x = ( ";
+	 for(int i=0; i < n; ++i){
+		 output << x[i] << ' ';
+	 }
+	 output << ")" << "\n \n";
+	 output << "And the L and U matrices are these: " << "\n";
+	 for(int i=0; i < n; ++i){
+		 for(int j=0; j < n; ++j){
+			output << i << " " << j << " " << L[i][j] << "\n"; 
+		 }
+	 }
+	 output << "\n" << "\n" << "\n";
+	 for(int i=0; i < n; ++i){
+		 for(int j=0; j < n; ++j){
+			output << i << " " << j << " " << U[i][j] << "\n"; 
+		 }
+	 }
+	 output << "\n" << "\n";
+	 output << "And the transposed is the next:" << "\n";
+	 
+	 Matrix T = transposed(COPY2);
+	 for(int i=0; i < n; ++i){
+		 for(int j=0; j < n; ++j){
+			 output << i << " " << j << " " << T[i][j] << "\n"; 
+		 }
+	 }
+	 output << "\n" << "\n" << "\n";
+	 output << "And, finally, the inverse is this one:" << "\n";
+	 vector<int> perm2(n);
+	 lu(COPY2, perm2);
+	 Matrix I = inverse(COPY2);
+	 for(int i=0; i < n; ++i){
+		 for(int j=0; j < n; ++j){
+			 output << i << " " << j << " " << I[i][j] << "\n"; 
+		 }
+	 }
 	 output.close();
 	 return 0;
 	 

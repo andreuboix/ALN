@@ -38,7 +38,7 @@ vector<double> resol(const Matrix& A, const vector<double>& b){ //
 
 
 		// This procedure gives us the MULTIPLICATORS MATRIX, DOOLITTLE METHOD //
-Matrix LUing(Matrix& A){
+Matrix LUing( Matrix& A){
 	int n = A.size();
 	Matrix L(n, vector<double> (n,0.0));
 	
@@ -55,7 +55,7 @@ Matrix LUing(Matrix& A){
 }
 
 	// This procedure gives us the RESIDUAL VECTOR //
-vector<double> residual(Matrix& A, vector<double>& x, vector<double>& b){
+vector<double> residual(const Matrix& A, const vector<double>& x,const  vector<double>& b){
 	int n = A.size();
 	
 	vector<double> r(n);
@@ -70,10 +70,9 @@ vector<double> residual(Matrix& A, vector<double>& x, vector<double>& b){
 }
 
 	// This procedure gives us the PA matrix //
-Matrix PAing (Matrix& A, vector<int>& permut){
+Matrix PAing (const Matrix& A, const vector<int>& permut){
 	int n = A.size();
 	int m = A[0].size();
-
 	Matrix aux(n, vector<double>(m));
 	for(int i=0; i < n; ++i){
 		aux[i] = A[permut[i]];
@@ -83,44 +82,52 @@ Matrix PAing (Matrix& A, vector<int>& permut){
 
 		// OPERATIONS WITH MATRICES & VECTORS - NORMS & DETERMINANT //
 			
-			
-			
-			// WORK IN PROGRESS ........// 
-			
-			// INVERSE OF A MATRIX //
-				// (Observation : Ax_{j} = e_{j}, then LUx_{j} = e_{j}, for all j = 1 _ n.) //
-/*Matrix inverse (Matrix& A){
-	int n = A.size();
-	
-	
-	
+			// IDENTITY MATRIX //
+Matrix Id(int n){
+	Matrix A(n, vector<double>(n));
+	for(int i=0; i < n; ++i){
+		for(int j=0; j < n; ++j){
+			if( i == j) A[i][j] = 1.0;
+			else A[i][j] = 0.0;	
+		}
+	}
+	return A;
 }
-
-			
+						
 			// TRANSPOSED OF A MATRIX // 
-Matrix transposed (Matrix& A){
+Matrix transposed (const Matrix& A){
 	int n = A.size();
-	Matrix aux(n);
+	Matrix aux(n, vector<double>(n));
 	for(int i=0; i < n; ++i){
 		for(int j = 0; j < n; ++j){
-			aux[j][i] = A[i][j];
+			aux[i][j] = A[j][i];
 		}
 	}
 	return aux;
-}			
-			// CALCULATING THE S = A^{T}A //
-Matrix symmetric (Matrix& A){
-	Matrix aux = multiplicacioMM(A, transposed(A));
-	return aux;
+}		
+			// INVERSE OF A MATRIX //
+				// (Observation : Ax_{j} = e_{j}, then LUx_{j} = e_{j}, for all j = 1 _ n.) //
+
+Matrix inverse (const Matrix& A){
+	int n = A.size();
+	Matrix aux(n, vector<double>(n));
+	for(int i=0; i < n; ++i){
+		vector<double> e(n,0);
+		e[i] = 1.0;
+		aux[i] = resol(A,e);
+	}
+	return transposed(aux);
 }
+	
 
 			// CALCULATE THE EIGENVALUES OF A MATRIX // 
 							// ... //
+ // Jacobi Algorithm... Not learnt yet :( //
 							
 							
 			// CALCULATE THE MATRICIAL 2-NORM //
 				// (Observation: It is the maximum in absolute value of the eigenvalues.) //
-			*/
+			
 			
 			// MULTIPLICATION MATRIX - MATRIX //
 			
@@ -139,9 +146,15 @@ Matrix multiplicacioMM(const Matrix & X, const Matrix & A){
 	return mul;
 }
 
+// CALCULATING THE S = A^{T}A //
+Matrix symmetric (const Matrix& A){
+	Matrix aux = multiplicacioMM(A, transposed(A));
+	return aux;
+}
+
 			// MULTIPLICATION MATRIX - VECTOR //
 			
-vector<double> multiplicacioMV(const Matrix & X, const vector<double> & Y){ // Ep, X ha de ser U.
+vector<double> multiplicacioMV(const Matrix & X,  vector<double> & Y){ // Ep, X ha de ser U.
 	int n = X.size();
 	int m = Y.size();
 	vector<double> mul(n);
@@ -167,7 +180,7 @@ vector<double> restaVV(const vector<double>& X, const vector<double>& Y){
 
 				// SUBSTRACTING MATRIX - MATRIX //
 
-Matrix restaMM (const Matrix& X, const Matrix& Y){
+Matrix restaMM (const Matrix& X,const Matrix& Y){
 	int n = Y[0].size();
 	int m = Y.size();
 	Matrix aux = X;
@@ -180,15 +193,26 @@ Matrix restaMM (const Matrix& X, const Matrix& Y){
 }
 
 
-				// DETERMINANT of a TRIANGULAR MATRIX is the TRACE //
-				
-double det (const Matrix& A){
+				// DETERMINANT of a TRIANGULAR MATRIX is NOT the TRACE //
+double trace (const Matrix& A){
 	int n = A.size();
 	double suma = 0;
 	for(int k=0; k < n; ++k){
 		suma += A[k][k];
 	}
 	return suma;
+}
+
+double det(const Matrix& A){
+	int n = A.size();
+	vector<int> perm(n,0);
+	Matrix LU = A;
+	
+	double res = lu(LU, perm);
+	for(int k=0; k < n; ++k){
+		res *= LU[k][k];
+	}
+	return res;
 }
 
 			// Norm_{1} of a MATRIX//
