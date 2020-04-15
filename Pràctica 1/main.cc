@@ -19,6 +19,7 @@ vector<double> resol(const Matrix& A, const vector<double>& b);
 Matrix LUing(Matrix& A);
 vector<double> residual(const Matrix& A,const vector<double>& x,const vector<double>& b);
 Matrix PAing (const Matrix& A,const vector<int>& permut);
+void Buid(Matrix& A);
 
 	// ops //
 Matrix Id(int n);
@@ -68,6 +69,7 @@ int main() {
 				
     Matrix COPY = A;
     Matrix COPY2 = A; 
+    Matrix COPY3 = A;
     vector<int> perm(n,0);
     
 				// HERE BEGINS THE ACTUAL PROGRAM //
@@ -82,7 +84,7 @@ int main() {
 	 // U & L TRIANGULAR MATRICES //
 	 Matrix U = COPY;
 	 Matrix L = LUing(COPY);
-	 
+	 Buid(U);
 	 // SOLUTIONS //
 	 vector<double> x(n,0);
 	 x = resol(A,b);
@@ -94,7 +96,7 @@ int main() {
 	 
 	 
 	 // WE PREPARE THE OUTPUT.TXT
-	 Matrix PA = PAing(A, perm);
+	 Matrix PA = PAing(COPY3, perm);
 	 Matrix LU = multiplicacioMM(L,U);
 	 Matrix restat = restaMM(PA, LU);
 	 double deta = det(A);
@@ -113,8 +115,8 @@ int main() {
 	 else cout << "ODD." << endl << endl;
 	 * */
 	 output << "This is the estimation of the error in the PA = LU with the 1-norm and Infinity-Norm:" << "\n";
-	 output << "||PA - LU ||_{1} = " << norma1M(restaMM(PAing(A,perm),multiplicacioMM(L,U))) << "\n";
-	 output << "||PA - LU ||_{infty} = " << normainfM(restaMM(PAing(A,perm),multiplicacioMM(L,U))) << "\n";
+	 output << "||PA - LU ||_{1} = " << norma1M(restaMM(PAing(COPY3,perm),multiplicacioMM(L,U))) << "\n";
+	 output << "||PA - LU ||_{infty} = " << normainfM(restaMM(PAing(COPY3,perm),multiplicacioMM(L,U))) << "\n";
 	 output << endl << "This is the estimation of the error in the solution with the 1,2,Infinity-Norms:" << "\n";
 	 output << "||Ax - b||_{1} = " << norma1V(r) << "\n";
 	 output << "||Ax - b||_{2} = " << norma2V(r) << "\n";
@@ -123,18 +125,29 @@ int main() {
 	 for(int i=0; i < n; ++i){
 		 output << x[i] << ' ';
 	 }
-	 output << ")" << "\n \n";
-	 output << "And the L and U matrices are these: " << "\n";
+	 output << ")" << "\n";
+	 output << "\n" << "\n";
+	 output << "The PA matrix has the next form:" << "\n";
 	 for(int i=0; i < n; ++i){
 		 for(int j=0; j < n; ++j){
-			output << i << " " << j << " " << L[i][j] << "\n"; 
+			 output << PA[i][j];
 		 }
+		 output << "\n" << "\n";
 	 }
-	 output << "\n" << "\n" << "\n";
+	 output << "\n";
+	 output << "And the U and L matrices are these: " << "\n";
 	 for(int i=0; i < n; ++i){
 		 for(int j=0; j < n; ++j){
-			output << i << " " << j << " " << U[i][j] << "\n"; 
+			output << U[i][j]; 
 		 }
+		 output << "\n" << "\n";
+	 }
+	  output << "\n" << "\n" << "\n";
+	 for(int i=0; i < n; ++i){
+		 for(int j=0; j < n; ++j){
+			output << L[i][j]; 
+		 }
+		 output << "\n" << "\n";
 	 }
 	 output << "\n" << "\n";
 	 output << "And the transposed is the next:" << "\n";

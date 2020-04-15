@@ -22,7 +22,7 @@ void Gauss(Matrix& A, int j){
 	}
 }
 
-	// Scaled Partial Pivoting (SCP).
+	// Scaled Partial Pivoting (SPP).
 	
 int pivotatge(Matrix& A, int j){
 	int n = A.size();

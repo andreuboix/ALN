@@ -7,7 +7,7 @@ typedef vector<vector <double> > Matrix;
 int lu(Matrix& A, vector<int>& permut);
 				// GIVEN A & b, SOLVES Ax = b & RETURNS x. //
 
-vector<double> resol(const Matrix& A, const vector<double>& b){ // 
+vector<double> resol(const Matrix& A, const vector<double>& b){ 
 	int n = A.size();
 	vector<double> x(n,0);
 	vector<int> perm (n,0);
@@ -57,9 +57,7 @@ Matrix LUing( Matrix& A){
 	// This procedure gives us the RESIDUAL VECTOR //
 vector<double> residual(const Matrix& A, const vector<double>& x,const  vector<double>& b){
 	int n = A.size();
-	
 	vector<double> r(n);
-	
 	for(int i=0; i < n; ++i){
 		r[i] = -b[i];
 		for(int j=0; j < n; ++j){
@@ -69,15 +67,29 @@ vector<double> residual(const Matrix& A, const vector<double>& x,const  vector<d
 	return r;
 }
 
+// ( 4 2 3 1 0 ) aux[0] = A[4], aux[1] ) A[2], aux[2] = A[3], aux[4] ) A[1], aux[5]= A[0]
 	// This procedure gives us the PA matrix //
 Matrix PAing (const Matrix& A, const vector<int>& permut){
 	int n = A.size();
 	int m = A[0].size();
 	Matrix aux(n, vector<double>(m));
 	for(int i=0; i < n; ++i){
-		aux[i] = A[permut[i]];
+		for(int j=0; j < n; ++j){
+			aux[i][j] = A[permut[i]][j];
+		}
 	}
 	return aux;
+}
+
+
+void Buid (Matrix& A){
+	int n = A.size();
+	for(int i=0; i < n; ++i){
+		for(int j = 0 ; j < n; ++j){
+				if (i > j) A[i][j] = 0;
+		}
+	}
+	return;
 }
 
 		// OPERATIONS WITH MATRICES & VECTORS - NORMS & DETERMINANT //
@@ -134,11 +146,11 @@ Matrix inverse (const Matrix& A){
 Matrix multiplicacioMM(const Matrix & X, const Matrix & A){
 	int n = X.size();
 	int m = A.size();
-	Matrix mul(n, vector<double>(m,0));
-	
+	int q = A[0].size();
+	Matrix mul(n, vector<double>(m,0.0));
 	for(int i=0;i<n;i++){    
 		for(int j=0;j<m;j++){    
-			for(int k=0;k<m;k++){    
+			for(int k=0;k<q;k++){    
 				mul[i][j]+=X[i][k]*A[k][j];    
 			}    
 		}    
