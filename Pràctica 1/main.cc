@@ -116,7 +116,8 @@ int main() {
 	 output   << "               -The L triangular matrix." << "\n";
 	 output  << "               -The U triangular matrix." << "\n";
 	 output   << "               -The transposed of the A matrix." << "\n";
-	 output  << "               -The inverse of the A matrix." << "\n" << "\n" << "\n";
+	 output  << "               -The inverse of the A matrix." << "\n";
+	 output << "               -The symmetric matrix created by the multiplication of Atransposed x A." << "\n" << "\n";
 	 output << scientific << setprecision(15);
 	 output << "The system dimension is " << n << "\n" << "\n";
 	 output << "The determinant of the system is: ";
@@ -175,13 +176,22 @@ int main() {
 		 output << "\n \n";
 	 }
 	 output << "\n" << "\n" << "\n";
-	 output << "And, finally, the inverse is this one:" << "\n";
+	 output << "And the inverse is this one:" << "\n";
 	 vector<int> perm2(n);
 	 lu(COPY2, perm2);
 	 Matrix I = inverse(COPY2);
 	 for(int i=0; i < n; ++i){
 		 for(int j=0; j < n; ++j){
 			 output << setw(20) << I[i][j] << " " ; 
+		 }
+		 output << "\n \n";
+	 }
+	 output << "And, finally, the S (always symmetric) matrix is this one:" << "\n";
+	 Matrix COPY5 = A;
+	 Matrix S = symmetric(A);
+	 for(int i=0; i < n; ++i){
+		 for(int j=0; j < n; ++j){
+			 output << setw(20) << S[i][j] << " "; 
 		 }
 		 output << "\n \n";
 	 }
