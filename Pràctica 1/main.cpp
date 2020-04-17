@@ -106,8 +106,8 @@ int main() {
 	 output << "Out of the MATXX.DAT or MSINGULARXX.DAT... " << "\n";
 	 output << "This .txt provides you the next information:" << "\n";
 	 output << "               -The dimension." << "\n";
-	 output << "               -The determinant." << "\n";
 	 output  <<"               -The permutation vector." << "\n";
+	 output << "               -The determinant." << "\n";
 	 output  <<"               -The parity of the permutations." << "\n";
 	 output  << "               -The error estimation in PA = LU : 1 and infinity norms." << "\n";
 	 output  <<  "               -The error estimation in Ax = b : 1,2 and infinity norms." << "\n";
@@ -120,16 +120,18 @@ int main() {
 	 output << "               -The symmetric matrix created by the multiplication of Atransposed x A." << "\n" << "\n";
 	 output << scientific << setprecision(15);
 	 output << "The system dimension is " << n << "\n" << "\n";
+	 output << "The number of permutations is: ";
+	 vector<int> perm4 (n,0);
+	 if (lu(COPY4,perm4) == 1 ) output << "EVEN." << endl << endl;
+	 else{
+		 deta = -deta;
+		 output << "ODD." << endl << endl;
+	 }
 	 output << "The determinant of the system is: ";
 	 output << deta << "\n" << "\n";
 	 output << "The permutation vector is: ( ";
 	 for(int i=0; i < n; ++i) output << perm[i] << ' ';
 	 output << ")" << "\n" << "\n";
-	 
-	 output << "The number of permutations is: ";
-	 vector<int> perm4 (n,0);
-	 if (lu(COPY4,perm4) == 1 ) output << "EVEN." << endl << endl;
-	 else output << "ODD." << endl << endl;
 	 output << "This is the estimation of the error in the PA = LU with the 1-norm and Infinity-Norm:" << "\n";
 	 output << "||PA - LU ||_{1} = " << norma1M(restaMM(PAing(COPY3,perm),multiplicacioMM(L,U))) << "\n";
 	 output << "||PA - LU ||_{infty} = " << normainfM(restaMM(PAing(COPY3,perm),multiplicacioMM(L,U))) << "\n";
