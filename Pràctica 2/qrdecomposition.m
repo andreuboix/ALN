@@ -1,4 +1,6 @@
 A = input("Enter the A Matrix in brackets this way [xxx; xxx; xxx; xxx;]")
+%A = readfile('')
+format long
 function [Q,R] = qr(A)
 [m,n] = size(A);
 Q = A;
