@@ -1,5 +1,5 @@
 # Pràctiques ALN
-1. Pràctica 1:
+1. Pràctica 1: C++
   - LU Decomposition.
   - Gauss and resolution (Doolittle method).
   - 1,2,inf vectorial norms of the error yielded when calculating the solution.
@@ -9,7 +9,7 @@
   - Calculation of the determinant of the matrix A.
   - Calculation of the S= A^{T} * A symmetric matrix.
   - Calculation of the eigenvalues of any matrix.
-2. Pràctica 2:
+2. Pràctica 2:MATLAB
   - QR Decomposition. 
   - Overdeterminate system resolution.
-  - Error yielded when calculating the solution.
+  - Error yielded when calculating the solution (still in progress).
