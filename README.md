@@ -9,3 +9,7 @@
   - Calculation of the determinant of the matrix A.
   - Calculation of the S= A^{T} * A symmetric matrix.
   - Calculation of the eigenvalues of any matrix.
+2. Pràctica 2:
+  - QR Decomposition. 
+  - Overdeterminate system resolution.
+  - Error yielded when calculating the solution.
