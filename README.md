@@ -12,4 +12,5 @@
 2. Pràctica 2:MATLAB
   - QR Decomposition. 
   - Overdeterminate system resolution.
+  - Eigenvalues and eigenvectors calculation without the eig() function.
   - Error yielded when calculating the solution (still in progress).
