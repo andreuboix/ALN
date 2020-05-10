@@ -15,7 +15,7 @@
   - QR Decomposition. 
   - Overdeterminate system resolution.
   - Eigenvalues and eigenvectors calculation without the eig() function.
-  - Error yielded when calculating the solution (still in progress).
+  - Error yielded when calculating the solution.
   
 3.Pràctica 3: MATLAB. Main iterative methods.
   - Jacobi method.
