@@ -11,6 +11,10 @@ function [coefs, norm2Res] = polminquad(x,y,grau,plt)
     m = length(x);
     q = grau;
     
+    %%%%%%%% ERRORS %%%%%%%%%%%%%%%%%%%%%%%%
+    if(m ~= length(y))
+        error('Error: different lengths of x and y')
+    end
     %%%%%%%%%%%%%%%%%  PREPARATION OF THE OVERDETERMINED SYSTEM %%%%%%%%%%%%%%%%%%%%%%%%%%%
     for i = 1:q
        A(:,i) = x.^(q+1-i);
