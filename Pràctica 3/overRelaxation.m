@@ -6,6 +6,13 @@ nmax = input('Enter the number of iterations you want me to do      ')
 prec = input('Enter the tolerance of this system         ')
 w = input('Enter the omega of this system         ')
 %%% ALTERNATIVELY: xlsread(for .xls), load(for ascii or .DAT), ...%%%
+%%% ALTERNATIVELY:
+
+
+%%% load('matriu100.mat')
+%%% load('matriu150.mat')
+%%% load('matriu200.mat')
+
 rho = max(abs(eig(A)))
 
 if(rho >= 1)
@@ -30,6 +37,9 @@ suma = 0;
 x = x0;
 
 for k = 2: nmax
+    if (norm(b-A*x,2)/norm(b-A*x0,2)<prec)
+            break
+        end
     iter = k
     x = B*x+c
 end
