@@ -60,7 +60,7 @@ int main() {
     }
     int k;
     cin >> k;
-    vector <double> b(k,0);
+    vector <double> b(n,0);
     for(int p=0; p < k; ++p){
         int i;
         cin >> i >> b[i];
