@@ -1,4 +1,3 @@
-
 function [x,rho,res,iter] = gaussS(A,b,x0,nmax,prec)
     format long
     %A = input('Enter the A matrix in brackets this way [x; x; x; x;]    ')
@@ -24,8 +23,8 @@ function [x,rho,res,iter] = gaussS(A,b,x0,nmax,prec)
     end
     D = diag(diag(A));
     L = tril(A,-1);
-    B =(D+w.*L)*((1-w).*D-w.*U);
-    c = w.*inv(L+D)*b;
+    B =eye(n) - (inv(L+D)*A);
+    c = inv(L+D)*b;
     x = x0;
      rho = max(abs(eig(B)))
         if(rho >= 1)
